@@ -1,5 +1,8 @@
 package com.goodgoodthings.entities;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum Formato {
 
     CD("CD"),
@@ -16,8 +19,19 @@ public enum Formato {
         this.descricao = descricao;
     }
 
+    @JsonValue
     public String getDescricao() {
         return descricao;
+    }
+
+    @JsonCreator
+    public static Formato fromDescricao(String descricao) {
+        for (Formato formato : Formato.values()) {
+            if (formato.getDescricao().equalsIgnoreCase(descricao)) {
+                return formato;
+            }
+        }
+        throw new IllegalArgumentException("Formato inválido: " + descricao);
     }
 
 }

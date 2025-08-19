@@ -15,6 +15,6 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     List<Album> findByAlbumTituloContainingIgnoreCase(String titulo);
 
-    List<Album> findByFormat(String format);
+    List<Album> findByFormato(String formato);
 
 }
