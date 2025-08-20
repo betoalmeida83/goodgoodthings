@@ -8,6 +8,7 @@ import com.goodgoodthings.repositories.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,5 +80,83 @@ public class AlbumService {
                 .collect(Collectors.toList());
     }
 
+    // Buscar Álbum por Id
+    public AlbumDTO buscarAlbumPorId(Long id) {
+        return albumRepository.findById(id)
+                .map(this::toDTO)
+                .orElseThrow(() -> new RuntimeException("Album não encontrado!"));
+    }
+
+    // Buscar Álbuns por Artista
+    public List<AlbumDTO> buscarAlbunsPorArtista(String artista) {
+        return albumRepository.findByArtistaContainingIgnoreCase(artista)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Buscar Álbum por Título
+    public List<AlbumDTO> buscarAlbumPorTitulo(String titulo) {
+        return albumRepository.findByAlbumTituloContainingIgnoreCase(titulo)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Buscar Álbuns por Genêro
+    public List<AlbumDTO> buscarAlbunsPorGenero(String genero) {
+        return albumRepository.findByGeneroContainingIgnoreCase(genero)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Buscar Álbuns por Formato da Mídia
+    public List<AlbumDTO> buscarAlbunsPorFormato(String formato) {
+        return albumRepository.findByFormatoContainingIgnoreCase(formato)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Atualizar Album
+    public AlbumDTO atualizarAlbum(Long id, AlbumDTO albumDTO) {
+        Album album = albumRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Álbum não encontrado!"));
+
+        album.setAlbumTitulo(albumDTO.getAlbumTitulo());
+        album.setArtista(albumDTO.getArtista());
+        album.setGravadora(albumDTO.getGravadora());
+        album.setAnoLancamento(albumDTO.getAnoLancamento());
+        album.setGenero(albumDTO.getGenero());
+        album.setDescricao(albumDTO.getDescricao());
+        album.setFormato(albumDTO.getFormato());
+        album.setPreco(albumDTO.getPreco());
+
+        if (albumDTO.getImagens() != null) {
+            album.getImagens().clear();
+
+            List<Imagem> novasImagens = albumDTO.getImagens().stream().map(imgDTO -> {
+                Imagem img = new Imagem();
+                img.setUrl(imgDTO.getUrl());
+                img.setTipo(imgDTO.getTipo());
+                img.setAlbum(album);
+                return img;
+            }).toList();
+
+            album.getImagens().addAll(novasImagens);
+        }
+
+        return toDTO(albumRepository.save(album));
+    }
+
+    // Deletar Album
+    public boolean deletarAlbum(Long id) {
+        if (!albumRepository.existsById(id)) {
+            return false;
+        }
+        albumRepository.deleteById(id);
+        return true;
+    }
 
 }
