@@ -1,5 +1,6 @@
 package com.goodgoodthings.dtos;
 
+import com.goodgoodthings.entities.TipoImagem;
 import lombok.*;
 
 @Getter
@@ -11,6 +12,7 @@ public class ImagemDTO {
 
     private Long id;
     private String url;
-    private String tipo;
+
+    private TipoImagem tipo;
 
 }

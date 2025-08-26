@@ -19,7 +19,9 @@ public class Imagem {
     @Column(nullable = false)
     private String url;
 
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoImagem tipoImagem;
 
     @ManyToOne
     @JoinColumn(name = "album_id", nullable = false)

@@ -17,11 +17,21 @@ public class AlbumDTO {
     private String artista;
     private String gravadora;
     private Integer anoLancamento;
-    private String genero;
     private String descricao;
     private Formato formato;
     private Double preco;
+    private Double precoCusto;
+
+    private Integer estoque;
+    private boolean ativo;
+
+    private List<String> generos;
+
+    private String grupoPrecificacao;
 
     private List<ImagemDTO> imagens;
+
+    private String motivoInativacao;
+    private String motivoAtivacao;
 
 }

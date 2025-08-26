@@ -1,6 +1,7 @@
 package com.goodgoodthings.controllers;
 
 import com.goodgoodthings.dtos.AlbumDTO;
+import com.goodgoodthings.entities.Formato;
 import com.goodgoodthings.services.AlbumService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,40 +41,15 @@ public class AlbumController {
         return ResponseEntity.ok(bucarAlbumID);
     }
 
-    // Buscar Álbuns por Artista
-    @GetMapping("/buscar/por-artista")
-    public ResponseEntity<List<AlbumDTO>> buscarAlbunsPorArtista(@RequestParam String artista) {
-        List<AlbumDTO> buscarAlbunsPorArtista = albumService.buscarAlbunsPorArtista(artista);
-        return buscarAlbunsPorArtista.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(buscarAlbunsPorArtista);
-    }
+    @GetMapping("/albuns/filtro")
+    public ResponseEntity<List<AlbumDTO>> buscarAlbunsFiltrados(
+            @RequestParam(required = false) String titulo,
+            @RequestParam(required = false) String artista,
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false) Formato formato) {
 
-    // Buscar Álbum por Título
-    @GetMapping("/buscar/por-titulo")
-    public ResponseEntity<List<AlbumDTO>> buscarAlbumPorTitulo(@RequestParam String titulo) {
-        List<AlbumDTO> buscarAlbumPorTitulo = albumService.buscarAlbumPorTitulo(titulo);
-        return buscarAlbumPorTitulo.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(buscarAlbumPorTitulo);
-    }
-
-    // Buscar Álbum por Genêro
-    @GetMapping("/buscar/por-genero")
-    public ResponseEntity<List<AlbumDTO>> buscarAlbunsPorGenero(@RequestParam String genero) {
-        List<AlbumDTO> buscarAlbumPorGenero = albumService.buscarAlbunsPorGenero(genero);
-        return buscarAlbumPorGenero.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(buscarAlbumPorGenero);
-    }
-
-    // Buscar Álbum por Formato da Mídia
-    @GetMapping("/buscar/por-formato")
-    public ResponseEntity<List<AlbumDTO>> buscarAlbunsPorFormato(@RequestParam String formato) {
-        List<AlbumDTO> buscarAlbunsPorFormato = albumService.buscarAlbunsPorFormato(formato);
-        return buscarAlbunsPorFormato.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.ok(buscarAlbunsPorFormato);
+        List<AlbumDTO> albuns = albumService.buscarAlbunsFiltrados(titulo, artista, genero, formato);
+        return ResponseEntity.ok(albuns);
     }
 
     // Atualizar Album

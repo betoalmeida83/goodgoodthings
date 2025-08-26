@@ -11,7 +11,7 @@ public enum Formato {
     VINIL_17("Vinil 7\""),
     K7("Fita K7"),
     DVD("DVD"),
-    BLUE_RAY("Blue Ray");
+    BLU_RAY("Blu Ray");
 
     private String descricao;
 
